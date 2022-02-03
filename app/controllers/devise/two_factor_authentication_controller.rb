@@ -63,9 +63,9 @@ class Devise::TwoFactorAuthenticationController < DeviseController
 
     if resource.max_login_attempts?
       sign_out(resource)
-      render :max_login_attempts_reached
+      render :max_login_attempts_reached, status: :unprocessable_entity
     else
-      render :show
+      render :show, status: :unprocessable_entity
     end
   end
 
