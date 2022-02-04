@@ -78,7 +78,7 @@ class Devise::TwoFactorAuthenticationController < DeviseController
     @limit = resource.max_login_attempts
     if resource.max_login_attempts?
       sign_out(resource)
-      render :max_login_attempts_reached and return
+      render :max_login_attempts_reached, status: :unprocessable_entity and return
     end
   end
 
