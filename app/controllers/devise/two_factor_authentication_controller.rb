@@ -8,9 +8,9 @@ class Devise::TwoFactorAuthenticationController < DeviseController
   end
 
   def update
-    render :show and return if params[:code].nil?
+    render :show, status: :unprocessable_entity and return if params_code.empty?
 
-    if resource.authenticate_otp(params[:code])
+    if resource.authenticate_otp(params_code)
       after_two_factor_success_for(resource)
     else
       after_two_factor_fail_for(resource)
@@ -80,5 +80,9 @@ class Devise::TwoFactorAuthenticationController < DeviseController
       sign_out(resource)
       render :max_login_attempts_reached and return
     end
+  end
+
+  def params_code
+    params[:code] || params.dig(resource_name, :code)
   end
 end
