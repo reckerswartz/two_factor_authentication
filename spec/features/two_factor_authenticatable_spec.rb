@@ -36,9 +36,10 @@ feature "User of two factor authentication" do
         fill_in 'code', with: SmsProvider.last_message.body
         click_button 'Submit'
 
-        within('.flash.notice') do
-          expect(page).to have_content('Two factor authentication successful.')
-        end
+        expect(page).to have_selector(
+          ".notice",
+          text: "Two factor authentication successful."
+        )
 
         expect(current_path).to eq root_path
       end
@@ -85,9 +86,7 @@ feature "User of two factor authentication" do
         fill_in "code", with: "incorrect#{rand(100)}"
         click_button "Submit"
 
-        within(".flash.alert") do
-          expect(page).to have_content("Attempt failed")
-        end
+        expect(page).to have_selector(".alert", text: "Attempt failed")
       end
 
       expect(page).to have_content("Access completely denied")
