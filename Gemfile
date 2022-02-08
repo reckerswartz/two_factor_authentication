@@ -9,7 +9,7 @@ rails = case rails_version
         when "master"
           {github: "rails/rails"}
         when "default"
-          "~> 5.2"
+          "~> 7.0.1"
         else
           "~> #{rails_version}"
         end
@@ -22,6 +22,7 @@ end
 
 group :test, :development do
   gem 'sqlite3'
+  gem 'sprockets-rails'
 end
 
 group :test do
