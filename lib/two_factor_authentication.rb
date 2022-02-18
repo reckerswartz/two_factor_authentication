@@ -32,6 +32,12 @@ module Devise
 
   mattr_accessor :delete_cookie_on_logout
   @@delete_cookie_on_logout = false
+  
+  mattr_accessor :issuer
+  @@issuer = ''
+  
+  mattr_accessor :logo_url
+  @@logo_url = ''
 end
 
 module TwoFactorAuthentication
