@@ -52,11 +52,16 @@ module Devise
         def provisioning_uri(account = nil, options = {})
           totp_secret = options[:otp_secret_key] || otp_secret_key
           options[:digits] ||= options[:otp_length] || self.class.otp_length
-          raise "provisioning_uri called with no otp_secret_key set" if totp_secret.nil?
+          raise 'provisioning_uri called with no otp_secret_key set' if totp_secret.nil?
+
           account ||= email if respond_to?(:email)
-          options[:issuer] ||= options[:issuer_name] unless options[:issuer_name].blank?
-          options[:image] ||= options[:logo_url] unless options[:logo_url].blank?
-          ROTP::TOTP.new(totp_secret, options).provisioning_uri(account)
+          options[:issuer] ||= self.class.issuer_name if self.class.issuer_name.present?
+          if self.class.logo_url.blank?
+            ROTP::TOTP.new(totp_secret, options).provisioning_uri(account)
+          else
+            image = "&image=#{self.class.logo_url}"
+            ROTP::TOTP.new(totp_secret, options).provisioning_uri(account) + image
+          end
         end
 
         def need_two_factor_authentication?(request)
