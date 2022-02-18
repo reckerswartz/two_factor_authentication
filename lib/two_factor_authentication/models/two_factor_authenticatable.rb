@@ -16,7 +16,8 @@ module Devise
         ::Devise::Models.config(
           self, :max_login_attempts, :allowed_otp_drift_seconds, :otp_length,
           :remember_otp_session_for_seconds, :otp_secret_encryption_key,
-          :direct_otp_length, :direct_otp_valid_for, :totp_timestamp, :delete_cookie_on_logout
+          :direct_otp_length, :direct_otp_valid_for, :totp_timestamp, :delete_cookie_on_logout,
+          :issuer, :issuer_name, :logo_url
         )
       end
 
@@ -53,6 +54,8 @@ module Devise
           options[:digits] ||= options[:otp_length] || self.class.otp_length
           raise "provisioning_uri called with no otp_secret_key set" if totp_secret.nil?
           account ||= email if respond_to?(:email)
+          options[:issuer] ||= options[:issuer_name] unless options[:issuer_name].blank?
+          options[:image] ||= options[:logo_url] unless options[:logo_url].blank?
           ROTP::TOTP.new(totp_secret, options).provisioning_uri(account)
         end
 
