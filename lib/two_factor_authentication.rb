@@ -33,7 +33,7 @@ module Devise
   mattr_accessor :delete_cookie_on_logout
   @@delete_cookie_on_logout = false
   
-  mattr_accessor :issuer
+  mattr_accessor :issuer_name
   @@issuer = ''
   
   mattr_accessor :logo_url
